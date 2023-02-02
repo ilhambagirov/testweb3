@@ -1,0 +1,41 @@
+.header {
+  .header_content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 9.6rem;
+    .header_logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 0.3rem;
+      cursor: pointer;
+    }
+
+    .header_menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      li {
+        padding: 2rem;
+        font-size: 2rem;
+        font-weight: 500;
+        color: white;
+        cursor: pointer;
+        letter-spacing: 0.1rem;
+        &.header_login {
+          padding: 1.3rem 1.3rem;
+          background-color: rgb(5, 84, 211);
+          border-radius: 0.8rem;
+          font-size: 2rem;
+          font-weight: 500;
+          color: white;
+          letter-spacing: 0.1rem;
+          &:hover {
+            background-color: rgb(109, 170, 224);
+          }
+        }
+      }
+    }
+  }
+}

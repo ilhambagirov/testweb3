@@ -8,11 +8,11 @@ interface Props {
 
 const Layout: NextPage<Props> = ({ children }) => {
   return (
-    <>
+    <div className="layout">
       <Header />
       <main>{children}</main>
       <Footer />
-    </>
+    </div>
   );
 };
 

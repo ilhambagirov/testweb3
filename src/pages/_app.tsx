@@ -1,7 +1,7 @@
 import Layout from "@/components/layout/layout";
 import type { AppProps } from "next/app";
-import "../common/styles/globals.css";
-
+import "../app/globals.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Layout>
