@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { useStoreContext } from "@/core/root-store";
 import { SyntheticEvent, useEffect, useState } from "react";
 import Loader from "../loader/loader";
+import { AiOutlineCopy } from "react-icons/ai";
 
 const Main: NextPage = observer(({}) => {
   const { transactionStore } = useStoreContext();
@@ -29,11 +30,11 @@ const Main: NextPage = observer(({}) => {
 
   const {
     checkIfWalletIsConnected,
-    transaction,
     sendTransaction,
     connectWallet,
     currentAccount,
     handleTransaction,
+    shortedAccount,
     loading,
   } = transactionStore;
 
@@ -44,7 +45,8 @@ const Main: NextPage = observer(({}) => {
   const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
     handleTransaction(transactionData);
 
-    const { addressTo, amount, keyword, message } = transaction;
+    const { addressTo, amount, keyword, message } = transactionData;
+    e.persist();
     e.preventDefault();
 
     if (!addressTo || !amount || !keyword || !message) return;
@@ -56,6 +58,10 @@ const Main: NextPage = observer(({}) => {
       keyword: "",
       message: "",
     });
+  };
+
+  const handleCopyToClipboard = () => {
+    navigator.clipboard.writeText(currentAccount);
   };
 
   return (
@@ -71,16 +77,22 @@ const Main: NextPage = observer(({}) => {
             <p className={styles.desc}>
               We provide better crypto services, use and be happy!
             </p>
-            {!currentAccount && (
+            {!shortedAccount && (
               <button className={styles.wallet} onClick={connectWallet}>
                 Connect Wallet
               </button>
             )}
 
-            {currentAccount && (
-              <p className={styles.desc}>
-                Your digital address : {currentAccount}
-              </p>
+            {shortedAccount && (
+              <>
+                <p className={styles.desc_address}>Your digital address :</p>
+                <p
+                  onClick={handleCopyToClipboard}
+                  className={styles.desc_shorthenAddress}
+                >
+                  {shortedAccount} <AiOutlineCopy />
+                </p>
+              </>
             )}
           </div>
           <div className={`${styles.content_right} col-xl-6 col-12`}>

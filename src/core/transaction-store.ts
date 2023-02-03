@@ -1,10 +1,12 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { ethers } from "ethers";
+import { ethers, utils } from "ethers";
 import { smartContractABI, smartContractAddress } from "../utils/constants";
+import { shortenAddress } from "../utils/shorthenAddress";
 import { Transaction } from "./models/transactions";
 
 export default class TransactionStore {
   currentAccount: string = "";
+  shortedAccount: string = "";
   transaction: Transaction = {
     addressTo: "",
     amount: 0,
@@ -55,6 +57,7 @@ export default class TransactionStore {
 
       runInAction(() => {
         if (accounts.length) {
+          this.shortedAccount = `${accounts[0].slice(0, 5)}...${accounts[0].slice(accounts[0].length - 4)}`;
           this.currentAccount = accounts[0];
         }
       });
@@ -72,6 +75,7 @@ export default class TransactionStore {
         runInAction(() => {
           if (accounts.length) {
             this.currentAccount = accounts[0];
+            this.shortedAccount = `${accounts[0].slice(0, 5)}...${accounts[0].slice(accounts[0].length - 4)}`;
           }
         });
       }
@@ -102,21 +106,16 @@ export default class TransactionStore {
           ],
         });
       }
-      console.log(parsedAmount);
+
       const transactionHash = await transactionContract.addTransaction(
         addressTo,
         amount,
         message,
         keyword
       );
-      console.log(parsedAmount);
-
-      console.log(`Loading - ${transactionHash.hash}`);
 
       await transactionHash.wait();
       this.setLoading(false);
-      console.log(`Success - ${transactionHash.hash}`);
-
       //   const transactionCount = await transactionContract.getTransacionCount();
     } catch (error) {
       this.setLoading(false);

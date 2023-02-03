@@ -15,6 +15,23 @@
         color: white;
         margin-bottom: 5rem;
       }
+      .desc_address {
+        margin-bottom: 0;
+        font-size: 2rem;
+        color: white;
+      }
+
+      .desc_shorthenAddress {
+        &:hover {
+          color: rgb(16, 109, 190);
+        }
+        margin-bottom: 0;
+        font-size: 2rem;
+        color: white;
+        cursor: pointer;
+        font-weight: 400;
+        margin-bottom: 5rem;
+      }
       .wallet {
         width: 70%;
         background-color: rgb(5, 84, 211);
@@ -25,6 +42,7 @@
         border-radius: 0.8rem;
         font-size: 2rem;
         font-weight: 400;
+        margin-bottom: 3rem;
         &:hover {
           background-color: rgb(109, 170, 224);
         }
@@ -85,6 +103,24 @@
           }
         }
       }
+    }
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .main_page {
+    height: auto;
+
+    .content_slogan {
+      font-size: 3rem !important;
+    }
+
+    .desc {
+      font-size: 1.7rem !important;
+    }
+
+    .form {
+      padding: 2rem !important;
     }
   }
 }

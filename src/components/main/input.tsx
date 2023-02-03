@@ -7,7 +7,10 @@ interface Props {
   name: string;
   type: string;
   value?: string;
-  handleFormChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
+  handleFormChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    name: string
+  ) => void;
 }
 
 export const Input: NextPage<Props> = observer(
