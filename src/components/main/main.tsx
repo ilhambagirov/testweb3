@@ -64,7 +64,7 @@ const Main: NextPage = observer(({}) => {
         <div
           className={`${styles.content} row d-flex justify-content-between w-100`}
         >
-          <div className={`${styles.content_left} col-6`}>
+          <div className={`${styles.content_left} col-xl-6 col-12`}>
             <h3 className={styles.content_slogan}>
               Transact crypto all over the world
             </h3>
@@ -83,7 +83,7 @@ const Main: NextPage = observer(({}) => {
               </p>
             )}
           </div>
-          <div className={`${styles.content_right} col-6`}>
+          <div className={`${styles.content_right} col-xl-6 col-12`}>
             <form action="" className={styles.form} onSubmit={handleSubmit}>
               <Input
                 placeholder="Address To"
