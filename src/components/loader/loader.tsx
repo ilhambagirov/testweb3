@@ -1,9 +1,21 @@
+import { observer } from "mobx-react-lite";
 import { NextPage } from "next";
+import { BallTriangle } from "react-loader-spinner";
+import styles from "./loader.module.scss";
 
-const Loader: NextPage = ({ }) => {
-  return <div className="flex justify-center items-center py-3">
-    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-red-700" />
-  </div>;
-};
+const Loader: NextPage = observer(({}) => {
+  return (
+    <div className={styles.loader}>
+      <BallTriangle
+        height={50}
+        width={50}
+        radius={5}
+        color="#4fa94d"
+        ariaLabel="ball-triangle-loading"
+        visible={true}
+      />
+    </div>
+  );
+});
 
-export default Loader
+export default Loader;
