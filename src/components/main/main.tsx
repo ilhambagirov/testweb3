@@ -2,8 +2,20 @@ import { NextPage } from "next";
 import { Container } from "../container/container";
 import styles from './main.module.scss'
 import { Input } from "../main/input"
+import { observer } from "mobx-react-lite";
+import { useStoreContext } from "@/core/root-store";
+import { useEffect } from "react";
 
-const Main: NextPage = ({ }) => {
+const Main: NextPage = observer(({ }) => {
+
+  const { transactionStore } = useStoreContext();
+  const { checkIfWalletIsConnected } =
+    transactionStore;
+
+  useEffect(() => {
+    checkIfWalletIsConnected()
+  }, [])
+
   return (
     <Container>
       <div className={styles.main_page}>
@@ -26,7 +38,7 @@ const Main: NextPage = ({ }) => {
       </div>
     </Container >
   )
-};
+});
 
 export default Main;
 
