@@ -7,6 +7,7 @@ import { Transaction } from "./models/transactions";
 export default class TransactionStore {
   currentAccount: string = "";
   shortedAccount: string = "";
+  balance: string = ""
   transaction: Transaction = {
     addressTo: "",
     amount: 0,
@@ -55,10 +56,16 @@ export default class TransactionStore {
         method: "eth_accounts",
       });
 
+      const balance = await window?.ethereum.request({
+        method: "eth_getBalance",
+        params: [accounts[0], "latest"],
+      })
+
       runInAction(() => {
         if (accounts.length) {
           this.shortedAccount = `${accounts[0].slice(0, 5)}...${accounts[0].slice(accounts[0].length - 4)}`;
           this.currentAccount = accounts[0];
+          this.balance = ethers.utils.formatEther(BigInt(balance).toString()).substring(0, 7)
         }
       });
     }
@@ -72,9 +79,15 @@ export default class TransactionStore {
           method: "eth_requestAccounts",
         });
 
+        const balance = await window?.ethereum.request({
+          method: "eth_getBalance",
+          params: [accounts[0], "latest"],
+        })
+
         runInAction(() => {
           if (accounts.length) {
             this.currentAccount = accounts[0];
+            this.balance = ethers.utils.formatEther(BigInt(balance).toString()).substring(0, 7)
             this.shortedAccount = `${accounts[0].slice(0, 5)}...${accounts[0].slice(accounts[0].length - 4)}`;
           }
         });
