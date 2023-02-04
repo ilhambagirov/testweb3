@@ -22,7 +22,7 @@ const TransactionsModule: NextPage = observer(({ }) => {
       <div className={`row d-flex justify-content-between ${styles.transactions}`}>
         {
           Array.from(transactionList.values()).map((transaction) => (
-            <div className={`${styles.transaction_wrapper} col-xl-4 col-md-6 col-12`}>
+            <div key={transaction.timeStamp} className={`${styles.transaction_wrapper} col-xl-4 col-md-6 col-12`}>
               <div className={`${styles.transaction}`}>
                 <div className={styles.transaction_top}>
                   <p>Hash: <p>{transaction.hash}</p></p>
