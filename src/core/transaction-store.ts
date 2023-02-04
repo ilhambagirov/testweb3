@@ -1,31 +1,42 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { ethers, utils } from "ethers";
 import { smartContractABI, smartContractAddress } from "../utils/constants";
-import { shortenAddress } from "../utils/shorthenAddress";
-import { Transaction } from "./models/transactions";
+import { TransactionForm } from "./models/transactions";
+import agent from "./api/agent";
+import { Pagination, PagingParams } from "./models/pagination";
+import { Transaction } from "@/components/transactions/models/transaction";
 
 export default class TransactionStore {
   currentAccount: string = "";
   shortedAccount: string = "";
-  balance: string = ""
-  transaction: Transaction = {
+  balance: string = "";
+  pagination: Pagination | null = null;
+  pagingParams = new PagingParams();
+  transaction: TransactionForm = {
     addressTo: "",
     amount: 0,
     keyword: "",
     message: "",
   };
+  transactionList = new Map<number, Transaction>()
   loading: boolean = false;
-  //   transactionCount: number | null = localStorage.getItem("count")
-  //     ? typeof window !== "undefined"
-  //       ? parseInt(window.localStorage.getItem("count")!)
-  //       : null
-  //     : null;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  handleTransaction = (transaction: Transaction) => {
+  //pagination
+  get axiosParams() {
+    const params = new URLSearchParams();
+    params.append("PageNumber", this.pagingParams.pageNumber.toString());
+    params.append("PageSize", this.pagingParams.pageSize.toString());
+    return params;
+  }
+  setPagingParams = (pagingParams: PagingParams) => {
+    this.pagingParams = pagingParams;
+  };
+
+  handleTransaction = (transaction: TransactionForm) => {
     runInAction(() => {
       this.transaction = transaction;
     });
@@ -135,4 +146,22 @@ export default class TransactionStore {
       console.log(error);
     }
   };
+
+  getAllTransactions = async () => {
+    try {
+      await this.checkIfWalletIsConnected()
+      console.log(this.currentAccount);
+      this.transactionList.clear()
+      agent.EtherScan.getAll(this.currentAccount, this.pagingParams.pageSize, this.pagingParams.pageNumber)
+        .then((response) => {
+          runInAction(() => {
+            Array.from(response.result).forEach((item) => {
+              this.transactionList.set(parseInt(item.timeStamp), item)
+            })
+          })
+        })
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

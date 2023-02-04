@@ -8,7 +8,7 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import Loader from "../loader/loader";
 import { AiOutlineCopy } from "react-icons/ai";
 
-const Main: NextPage = observer(({}) => {
+const Main: NextPage = observer(({ }) => {
   const { transactionStore } = useStoreContext();
   const [transactionData, setTransactionData] = useState({
     addressTo: "",

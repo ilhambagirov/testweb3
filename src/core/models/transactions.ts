@@ -1,4 +1,4 @@
-export type Transaction = {
+export type TransactionForm = {
   addressTo: string;
   amount: number;
   keyword: string;
