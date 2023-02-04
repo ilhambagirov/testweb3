@@ -109,7 +109,7 @@ export default class TransactionStore {
 
       const transactionHash = await transactionContract.addTransaction(
         addressTo,
-        amount,
+        parsedAmount,
         message,
         keyword
       );
@@ -119,7 +119,7 @@ export default class TransactionStore {
       //   const transactionCount = await transactionContract.getTransacionCount();
     } catch (error) {
       this.setLoading(false);
-      console.log("ethereum object not found");
+      console.log(error);
     }
   };
 }
