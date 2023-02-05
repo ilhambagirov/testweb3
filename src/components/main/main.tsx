@@ -7,6 +7,7 @@ import { useStoreContext } from "@/core/root-store";
 import { SyntheticEvent, useEffect, useState } from "react";
 import Loader from "../loader/loader";
 import { AiOutlineCopy } from "react-icons/ai";
+import { ethers } from "ethers";
 
 const Main: NextPage = observer(({ }) => {
   const { transactionStore } = useStoreContext();
@@ -40,6 +41,8 @@ const Main: NextPage = observer(({ }) => {
 
   useEffect(() => {
     checkIfWalletIsConnected();
+
+    console.log(ethers.utils.parseUnits("1000", 18))
   }, []);
 
   const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {

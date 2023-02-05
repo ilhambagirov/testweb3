@@ -1,9 +1,8 @@
-import Layout from "@/components/layout/layout";
-import ServicesModule from "@/components/services/services-module";
+import { WagmiClientModule } from "@/components/spiral/wagmi-client";
 import { NextPage } from "next";
 
-const Services: NextPage = ({}) => {
-  return <ServicesModule />;
+const Services: NextPage = ({ }) => {
+  return <WagmiClientModule />;
 };
 
 export default Services;

@@ -150,7 +150,6 @@ export default class TransactionStore {
   getAllTransactions = async () => {
     try {
       await this.checkIfWalletIsConnected()
-      console.log(this.currentAccount);
       this.transactionList.clear()
       agent.EtherScan.getAll(this.currentAccount, this.pagingParams.pageSize, this.pagingParams.pageNumber)
         .then((response) => {

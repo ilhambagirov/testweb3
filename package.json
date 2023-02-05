@@ -29,6 +29,7 @@
     "react-icons": "^4.7.1",
     "react-loader-spinner": "^5.3.4",
     "sass": "^1.58.0",
+    "wagmi": "^0.11.4",
     "web3": "^1.8.2",
     "webpack": "^5.75.0"
   },
