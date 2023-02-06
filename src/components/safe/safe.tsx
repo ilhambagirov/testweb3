@@ -67,7 +67,7 @@ const SafeModule: NextPage = observer(({ }) => {
                     <p>Treshold: {safeData.threshold}</p>
                     <ul>
                         {safeData.owners.map(owner => (
-                            <li onClick={() => handleCopyToClipboard(owner)}>{owner} <AiOutlineCopy /></li>
+                            <li onClick={() => handleCopyToClipboard(owner)} key={owner}>{owner} <AiOutlineCopy /></li>
                         ))}
                     </ul>
                 </div>
@@ -75,7 +75,7 @@ const SafeModule: NextPage = observer(({ }) => {
                     <h1>Assets</h1>
                     <ul>
                         {safeBalance.map(asset => (
-                            <li onClick={() => handleCopyToClipboard(asset.tokenAddress)}>
+                            <li key={asset.tokenAddress} onClick={() => handleCopyToClipboard(asset.tokenAddress)}>
                                 <div className={styles.token_info}>
                                     <p className={styles.token_name}>{asset.token?.name ?? "Ether"} <AiOutlineCopy /></p>
                                     <img src={asset.token?.logoUri ?? eth.src} alt="" />

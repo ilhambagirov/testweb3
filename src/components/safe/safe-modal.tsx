@@ -48,7 +48,7 @@ const SafeModule: NextPage = observer(({ }) => {
                 <h1>Safes</h1>
                 <ul>
                     {safes.map(safe => (
-                        <li onClick={() => handleChooseSafeAddress(safe)}><Link href={"my-safe"}>{safe}</Link></li>
+                        <li key={safe} onClick={() => handleChooseSafeAddress(safe)}><Link href={"my-safe"}>{safe}</Link></li>
                     ))}
                 </ul>
             </div>
