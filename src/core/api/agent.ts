@@ -1,3 +1,6 @@
+import { BalanceData } from "@/components/safe/models/balance-data";
+import { SafeData } from "@/components/safe/models/safe-data";
+import { SafesList } from "@/components/safe/models/safes";
 import { Transaction } from "@/components/transactions/models/transaction";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { EtherScanTransactionResponse } from "../models/etherscan-transaction-response";
@@ -6,6 +9,11 @@ import { rootStore } from "../root-store";
 
 var axiosApiForEtherscan = axios.create({
     baseURL: process.env.NEXT_PUBLIC_ETHERSCAN_API_URL,
+    timeout: 1000,
+});
+
+var axiosApiForGnosisSafe = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_GNOSIS_SAFE_API_URL,
     timeout: 1000,
 });
 
@@ -67,11 +75,22 @@ const request = {
 };
 
 const EtherScan = {
-    getAll: (address: string, offset: number, page: number) => request.get<EtherScanTransactionResponse>(`?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=${page}&offset=${offset}&sort=asc&apikey=${process.env.NEXT_PUBLIC_API_KEY}`),
+    getAll: (address: string, offset: number, page: number) => request
+        .get<EtherScanTransactionResponse>(`?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=${page}&offset=${offset}&sort=asc&apikey=${process.env.NEXT_PUBLIC_API_KEY}`),
+};
+
+const GnosisSafe = {
+    checkIfHasSafeAndOwner: (address: string) => axiosApiForGnosisSafe
+        .get<SafesList>(`/owners/${address}/safes/`).then(responseBody),
+    getSafeDataByAddress: (safeAddress: string) => axiosApiForGnosisSafe
+        .get<SafeData>(`/safes/${safeAddress}/`).then(responseBody),
+    getSafeBalanceByAddress: (safeAddress: string) => axiosApiForGnosisSafe
+        .get<BalanceData[]>(`/safes/${safeAddress}/balances/?trusted=true&exclude_spam=true`).then(responseBody),
 };
 
 const agent = {
-    EtherScan
+    EtherScan,
+    GnosisSafe
 };
 
 export default agent;

@@ -8,9 +8,10 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import Loader from "../loader/loader";
 import { AiOutlineCopy } from "react-icons/ai";
 import { ethers } from "ethers";
+import SafeModule from "../safe/safe-modal";
 
 const Main: NextPage = observer(({ }) => {
-  const { transactionStore } = useStoreContext();
+  const { transactionStore, safeStore } = useStoreContext();
   const [transactionData, setTransactionData] = useState({
     addressTo: "",
     amount: 0,
@@ -68,81 +69,82 @@ const Main: NextPage = observer(({ }) => {
   };
 
   return (
-    <Container>
-      <div className={styles.main_page}>
-        <div
-          className={`${styles.content} row d-flex justify-content-between w-100`}
-        >
-          <div className={`${styles.content_left} col-xl-6 col-12`}>
-            <h3 className={styles.content_slogan}>
-              Transact crypto all over the world
-            </h3>
-            <p className={styles.desc}>
-              We provide better crypto services, use and be happy!
-            </p>
-            {!shortedAccount && (
-              <button className={styles.wallet} onClick={connectWallet}>
-                Connect Wallet
-              </button>
-            )}
-
-            {shortedAccount && (
-              <>
-                <p className={styles.desc_address}>Your digital address :</p>
-                <p
-                  onClick={handleCopyToClipboard}
-                  className={styles.desc_shorthenAddress}
-                >
-                  {shortedAccount} <AiOutlineCopy />
-                </p>
-              </>
-            )}
-          </div>
-          <div className={`${styles.content_right} col-xl-6 col-12`}>
-            <form action="" className={styles.form} onSubmit={handleSubmit}>
-              <Input
-                placeholder="Address To"
-                name="addressTo"
-                type="text"
-                handleFormChange={handleFormChange}
-                value={transactionData.addressTo}
-              />
-              <Input
-                placeholder="Amount (ETH)"
-                name="amount"
-                type="number"
-                handleFormChange={handleFormChange}
-                value={
-                  transactionData.amount === 0
-                    ? ""
-                    : transactionData.amount.toString()
-                }
-              />
-              <Input
-                placeholder="Keyword (Gif)"
-                name="keyword"
-                type="text"
-                handleFormChange={handleFormChange}
-                value={transactionData.keyword}
-              />
-              <Input
-                placeholder="Enter Message"
-                name="message"
-                type="text"
-                handleFormChange={handleFormChange}
-                value={transactionData.message}
-              />
-
-              {loading ? (
-                <Loader />
-              ) : (
-                <button className={styles.send}>Send</button>
+    <>
+      <Container>
+        <div className={styles.main_page}>
+          <div
+            className={`${styles.content} row d-flex justify-content-between w-100`}
+          >
+            <div className={`${styles.content_left} col-xl-6 col-12`}>
+              <h3 className={styles.content_slogan}>
+                Transact crypto all over the world
+              </h3>
+              <p className={styles.desc}>
+                We provide better crypto services, use and be happy!
+              </p>
+              {!shortedAccount && (
+                <button className={styles.wallet} onClick={connectWallet}>
+                  Connect Wallet
+                </button>
               )}
-            </form>
+              {shortedAccount && (
+                <>
+                  <p className={styles.desc_address}>Your digital address :</p>
+                  <p
+                    onClick={handleCopyToClipboard}
+                    className={styles.desc_shorthenAddress}
+                  >
+                    {shortedAccount} <AiOutlineCopy />
+                  </p>
+                </>
+              )}
+            </div>
+            <div className={`${styles.content_right} col-xl-6 col-12`}>
+              <form action="" className={styles.form} onSubmit={handleSubmit}>
+                <Input
+                  placeholder="Address To"
+                  name="addressTo"
+                  type="text"
+                  handleFormChange={handleFormChange}
+                  value={transactionData.addressTo}
+                />
+                <Input
+                  placeholder="Amount (ETH)"
+                  name="amount"
+                  type="number"
+                  handleFormChange={handleFormChange}
+                  value={
+                    transactionData.amount === 0
+                      ? ""
+                      : transactionData.amount.toString()
+                  }
+                />
+                <Input
+                  placeholder="Keyword (Gif)"
+                  name="keyword"
+                  type="text"
+                  handleFormChange={handleFormChange}
+                  value={transactionData.keyword}
+                />
+                <Input
+                  placeholder="Enter Message"
+                  name="message"
+                  type="text"
+                  handleFormChange={handleFormChange}
+                  value={transactionData.message}
+                />
+
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <button className={styles.send}>Send</button>
+                )}
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 });
 

@@ -5,6 +5,7 @@ import { TransactionForm } from "./models/transactions";
 import agent from "./api/agent";
 import { Pagination, PagingParams } from "./models/pagination";
 import { Transaction } from "@/components/transactions/models/transaction";
+const createKeccakHash = require('keccak')
 
 export default class TransactionStore {
   currentAccount: string = "";
@@ -64,7 +65,7 @@ export default class TransactionStore {
 
     if (window?.ethereum.request) {
       const accounts = await window?.ethereum.request({
-        method: "eth_accounts",
+        method: "eth_requestAccounts",
       });
 
       const balance = await window?.ethereum.request({
@@ -72,15 +73,31 @@ export default class TransactionStore {
         params: [accounts[0], "latest"],
       })
 
+      let mixedCaseAddress = this.toChecksumAddress(accounts[0])
       runInAction(() => {
         if (accounts.length) {
-          this.shortedAccount = `${accounts[0].slice(0, 5)}...${accounts[0].slice(accounts[0].length - 4)}`;
-          this.currentAccount = accounts[0];
+          this.shortedAccount = `${mixedCaseAddress.slice(0, 5)}...${mixedCaseAddress.slice(mixedCaseAddress.length - 4)}`;
+          this.currentAccount = mixedCaseAddress;
           this.balance = ethers.utils.formatEther(BigInt(balance).toString()).substring(0, 7)
         }
       });
     }
   };
+
+  private toChecksumAddress(address: string) {
+    address = address.toLowerCase().replace('0x', '')
+    var hash = createKeccakHash('keccak256').update(address).digest('hex')
+    var ret = '0x'
+
+    for (var i = 0; i < address.length; i++) {
+      if (parseInt(hash[i], 16) >= 8) {
+        ret += address[i].toUpperCase()
+      } else {
+        ret += address[i]
+      }
+    }
+    return ret
+  }
 
   connectWallet = async () => {
     try {
@@ -95,11 +112,12 @@ export default class TransactionStore {
           params: [accounts[0], "latest"],
         })
 
+        let mixedCaseAddress = this.toChecksumAddress(accounts[0])
         runInAction(() => {
           if (accounts.length) {
-            this.currentAccount = accounts[0];
+            this.currentAccount = mixedCaseAddress;
             this.balance = ethers.utils.formatEther(BigInt(balance).toString()).substring(0, 7)
-            this.shortedAccount = `${accounts[0].slice(0, 5)}...${accounts[0].slice(accounts[0].length - 4)}`;
+            this.shortedAccount = `${mixedCaseAddress.slice(0, 5)}...${mixedCaseAddress.slice(mixedCaseAddress.length - 4)}`;
           }
         });
       }

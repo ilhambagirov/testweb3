@@ -6,7 +6,7 @@ import { useStoreContext } from "@/core/root-store";
 import Link from "next/link";
 
 const Header: NextPage = observer(({ }) => {
-  const { transactionStore } = useStoreContext();
+  const { transactionStore, safeStore } = useStoreContext();
 
   return (
     <div className={styles.header} >
@@ -20,6 +20,9 @@ const Header: NextPage = observer(({ }) => {
               <ul className="d-flex">
                 <li>
                   <Link href="/transactions">Transactions</Link>
+                </li>
+                <li onClick={() => safeStore.setModalOpen()}>
+                  My safes
                 </li>
                 <li>
                   Balance: {transactionStore.balance}
